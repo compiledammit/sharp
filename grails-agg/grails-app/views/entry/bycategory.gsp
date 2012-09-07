@@ -21,6 +21,7 @@
     </section>
 
     <aside id="application-status" class="span3">
+        <g:render template="/shared/sidebars/searchBoxTemplate"/>
         <g:render template="/shared/sidebars/siteInfoTemplate" />
         <g:render template="/shared/sidebars/statsTemplate" />
     </aside>

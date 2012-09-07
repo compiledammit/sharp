@@ -14,6 +14,11 @@ class Feed {
     static hibernateFilters = {
         approvedFilter(condition:'is_approved=1', default: true)
     }
+
+    static searchable = {
+        root false
+    }
+
     static hasMany = [entries: Entry]
 
     static constraints = {

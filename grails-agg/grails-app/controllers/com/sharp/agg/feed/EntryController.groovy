@@ -6,11 +6,34 @@ import grails.plugins.springsecurity.Secured
 class EntryController {
     EntryService entryService
     FeedService feedService
+    def searchableService
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index() {
         redirect(action: "list", params: params)
+    }
+
+    @Secured("IS_AUTHENTICATED_ANONYMOUSLY")
+    def search() {
+        def query = params.q
+        if (query) {
+            params.max = Math.min(params.max as Integer ?: 10, 100)
+            def opts = [suggestQuery: false]
+            try{
+                def results = searchableService.search(query, opts+params)
+                render(view: "searchResults", model: [entries: results.results, entriesTotal: results.total, suggest: results?.suggestedQuery])
+            }
+            catch(Exception e){
+                flash.message = message(code: 'default.search.error', default:'Ooops, something went wrong.  Please try another query.')
+                redirect(controller: 'home', action: 'index')
+                return
+            }
+        }
+        else {
+            redirect(controller: "home", action: "index")
+            return
+        }
     }
 
     @Secured("IS_AUTHENTICATED_ANONYMOUSLY")

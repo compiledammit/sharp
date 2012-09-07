@@ -62,5 +62,7 @@ grails.project.dependency.resolution = {
 
         compile ":hibernate-filter:0.3.2"
 
+        compile ":searchable:0.6.3"
+
     }
 }

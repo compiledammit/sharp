@@ -7,6 +7,13 @@ class Entry {
     Date postedOn
     Date dateCreated
 
+    static searchable = {
+        root true
+        categories component: true
+        feed component: true
+        spellCheck "include"
+    }
+
     static belongsTo = [feed: Feed]
     static hasMany = [categories: Category]
 

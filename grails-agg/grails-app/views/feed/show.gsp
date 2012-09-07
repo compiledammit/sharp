@@ -46,7 +46,8 @@
 						<dt><g:message code="feed.title.label" default="Title" /></dt>
 						
 							<dd><g:fieldValue bean="${feedInstance}" field="title"/></dd>
-						
+							<dd>${fieldValue(bean: feedInstance, field: "title")}</dd>
+
 					</g:if>
 				
 					<g:if test="${feedInstance?.url}">
