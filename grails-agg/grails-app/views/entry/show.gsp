@@ -45,21 +45,20 @@
 					<g:if test="${entryInstance?.title}">
 						<dt><g:message code="entry.title.label" default="Title" /></dt>
 						
-							<dd><g:fieldValue bean="${entryInstance}" field="title"/></dd>
+                        <dd>${fieldValue(bean: entryInstance, field: "title")}</dd>
 						
 					</g:if>
 				
 					<g:if test="${entryInstance?.link}">
 						<dt><g:message code="entry.link.label" default="Link" /></dt>
 						
-							<dd><g:fieldValue bean="${entryInstance}" field="link"/></dd>
-						
+                        <dd>${fieldValue(bean: entryInstance, field: "link")}</dd>
 					</g:if>
 				
 					<g:if test="${entryInstance?.contents}">
 						<dt><g:message code="entry.contents.label" default="Contents" /></dt>
 						
-							<dd><g:fieldValue bean="${entryInstance}" field="contents"/></dd>
+                        <dd>${fieldValue(bean: entryInstance, field: "contents")}</dd>
 						
 					</g:if>
 				

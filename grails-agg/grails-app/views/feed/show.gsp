@@ -45,7 +45,6 @@
 					<g:if test="${feedInstance?.title}">
 						<dt><g:message code="feed.title.label" default="Title" /></dt>
 						
-							<dd><g:fieldValue bean="${feedInstance}" field="title"/></dd>
 							<dd>${fieldValue(bean: feedInstance, field: "title")}</dd>
 
 					</g:if>
@@ -53,7 +52,7 @@
 					<g:if test="${feedInstance?.url}">
 						<dt><g:message code="feed.url.label" default="Url" /></dt>
 						
-							<dd><g:fieldValue bean="${feedInstance}" field="url"/></dd>
+                        <dd>${fieldValue(bean: feedInstance, field: "url")}</dd>
 						
 					</g:if>
 				

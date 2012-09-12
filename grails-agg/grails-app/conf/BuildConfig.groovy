@@ -64,5 +64,6 @@ grails.project.dependency.resolution = {
 
         compile ":searchable:0.6.3"
 
+        compile ':app-info:1.0.1'
     }
 }

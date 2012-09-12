@@ -13,6 +13,8 @@
                         <g:each in="${entry.categories}" var="cat" status="s">
                             <g:link controller="entry" action="byCategory" id="${cat.id}">${cat.category}</g:link><g:if test="${s != entry.categories.size() - 1}">,</g:if>
                         </g:each>
+                    &bull;
+                        ${entry.getViewCount()} View<g:if test="${entry.getViewCount() != 1}">s</g:if>
                     </p>
                 </div>
             </div>

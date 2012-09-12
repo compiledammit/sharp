@@ -39,7 +39,7 @@ class EntryService extends CrudService {
         xmlFeed.channel.item.each { item ->
             def cats = item.category
 
-            def categories = []
+            def categories = new TreeSet<Category>()
 
             item.category.each { cat ->
                 def thisCat = cat.text()
@@ -58,7 +58,7 @@ class EntryService extends CrudService {
             feed.lastChecked = new Date();
             feedService.save(feed)
 
-            Entry entry = new Entry(title: util.stripTags(util.left(item.title.text(), 250)), link: util.left(item.link.text(), 1000), contents: util.stripTags(util.left(item.description.text(), 4000)), postedOn: new Date(item.pubDate.text()), feed: feed, categories: categories)
+            Entry entry = new Entry(title: util.stripTags(util.left(item.title.text(), 250)), link: util.left(item.link.text(), 1000), contents: util.stripTags(util.left(item.description.text(), 2000)), postedOn: new Date(item.pubDate.text()), feed: feed, categories: categories)
 
             save(entry)
 

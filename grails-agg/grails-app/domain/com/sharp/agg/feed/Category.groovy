@@ -1,6 +1,6 @@
 package com.sharp.agg.feed
 
-class Category {
+class Category implements Comparable {
     String category
 
     static searchable = {
@@ -9,5 +9,9 @@ class Category {
 
     static constraints = {
         category(unique: true, maxSize: 100)
+    }
+
+    int compareTo(obj) {
+        category.compareTo(obj.category)
     }
 }

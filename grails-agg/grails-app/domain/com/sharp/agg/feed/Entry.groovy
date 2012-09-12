@@ -15,12 +15,18 @@ class Entry {
     }
 
     static belongsTo = [feed: Feed]
-    static hasMany = [categories: Category]
+    static hasMany = [categories: Category, entryViews: EntryView]
+
+    SortedSet categories
 
     static constraints = {
         title(blank: false, maxSize: 250)
-        link(blank:  false, url: true, unique: true, maxSize: 1000)
-        contents(blank: false, maxSize: 4000)
+        link(blank: false, url: true, unique: true, maxSize: 1000)
+        contents(blank: false, maxSize: 2000)
         postedOn()
+    }
+
+    def getViewCount() {
+        return entryViews.size()
     }
 }

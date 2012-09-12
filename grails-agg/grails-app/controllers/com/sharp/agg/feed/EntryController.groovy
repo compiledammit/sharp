@@ -39,7 +39,13 @@ class EntryController {
     @Secured("IS_AUTHENTICATED_ANONYMOUSLY")
     def go(String id) {
         def entry = Entry.findById(id)
+
         def clientAddr = request.getRemoteAddr()
+        def entryView = new EntryView()
+        entryView.remoteAddress = clientAddr
+        entryView.entry = entry
+        entryView.save()
+
         redirect(url: entry.link)
     }
 

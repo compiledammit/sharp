@@ -28,4 +28,9 @@ class Feed {
         createdBy(nullable: true)
         isApproved(blank: false)
     }
+
+    static mapping  ={
+        entries sort: "postedOn", order: "desc"
+    }
 }
+

@@ -18,7 +18,7 @@ environments {
             dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
             url = "jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000"
             configClass = HibernateFilterDomainConfiguration
-            //loggingSql = true
+            loggingSql = true
         }
     }
     test {
