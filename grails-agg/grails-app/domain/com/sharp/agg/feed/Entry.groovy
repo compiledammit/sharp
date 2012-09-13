@@ -26,6 +26,10 @@ class Entry {
         postedOn()
     }
 
+    static mapping = {
+        sort postedOn: "desc"
+    }
+
     def getViewCount() {
         return entryViews.size()
     }

@@ -8,12 +8,15 @@ class FeedControllerTests extends BaseControllerTestCase {
 
     def feedService
     def entryService
+    def controller
 
     @Before
     void setUp() {
         super.setUp()
+        controller = new FeedController()
         controller.feedService = feedService
         controller.entryService = entryService
+
     }
 
     @After
@@ -24,47 +27,43 @@ class FeedControllerTests extends BaseControllerTestCase {
     @Test
     void testIndex() {
         controller.index()
-        assertEquals("list", controller.redirectArgs.action)
+        assertEquals("/feed/list", controller.response.redirectedUrl)
     }
 
 
     @Test
     void testList() {
-
         (1..11).each { i ->
-            def model = createFeed([title: 'Test ' + i, url: 'http://test.org/' + i, isApproved: false])
-            saveFeed(model.feedInstance)
+            def feed = Feed.newInstance([title: 'Test ' + i, url: 'http://test.org/' + i, isApproved: false, dateCreated: new Date(), lastChecked: new Date(), lastUpdated: new Date()])
+            feed.save(flush: true, failOnError: true)
         }
-        def model = controller.list(10)
+        controller.params.max = 10
+        def model = controller.list()
         assertTrue model.feedInstanceList.size() == 10
         assertTrue model.feedInstanceTotal > 10
     }
 
     @Test
     void testCreate() {
-        def model = createFeed([title: 'Test ' + UUID.randomUUID().toString(), url: 'http://test.org/' + UUID.randomUUID().toString(), isApproved: false])
+        controller.params.putAll([title: 'Test ' + UUID.randomUUID().toString(), url: 'http://test.org/' + UUID.randomUUID().toString(), isApproved: false, dateCreated: new Date(), lastChecked: new Date(), lastUpdated: new Date()])
+        def model = controller.create()
         assertNotNull model.feedInstance
         assert model.feedInstance instanceof Feed
     }
 
     @Test
     void testSave() {
-        def model = createFeed([title: 'Test ' + UUID.randomUUID().toString(), url: 'http://test.org/' + UUID.randomUUID().toString(), isApproved: false])
-        def savedModel = saveFeed(model.feedInstance)
+        controller.params.putAll([title: 'Test ' + UUID.randomUUID().toString(), url: 'http://test.org/' + UUID.randomUUID().toString(), isApproved: false, dateCreated: new Date(), lastChecked: new Date(), lastUpdated: new Date()])
+        controller.save()
 
-        def feed = Feed.findById( controller.redirectArgs.id )
+        def url = controller.response.redirectedUrl
+        def urlArr = url.split('/')
+        def id = urlArr[urlArr.length - 1]
 
-        assert controller.redirectArgs.action == 'show'
+        def feed = Feed.findById(id)
+
+        assertEquals "/feed/show/" + id, controller.response.redirectedUrl
         assert feed
     }
 
-    private saveFeed(Feed feed) {
-        controller.params.putAll(feed.properties)
-        return controller.save()
-    }
-
-    private createFeed(args) {
-        controller.params.putAll(args)
-        return controller.create()
-    }
 }
