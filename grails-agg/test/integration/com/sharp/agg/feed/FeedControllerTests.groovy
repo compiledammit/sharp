@@ -66,4 +66,71 @@ class FeedControllerTests extends BaseControllerTestCase {
         assert feed
     }
 
+    @Test
+    void testSuggestFeed() {
+        def model = controller.suggestFeed();
+        assert model.feedInstance instanceof Feed
+    }
+
+    @Test
+    void testSaveSuggestFeed() {
+        def beforeSuggest = Feed.count()
+        controller.params.putAll([title: 'Test', url: 'http://test.org'])
+        controller.saveSuggestFeed();
+        def afterSuggest = Feed.count()
+        def u = controller.response.redirectedUrl
+        assertEquals('/', u)
+        assert afterSuggest == beforeSuggest + 1
+    }
+
+    @Test
+    void testShow() {
+        def feed = Feed.newInstance([title: 'Test ' + UUID.randomUUID(), url: 'http://test.org/' + UUID.randomUUID(), isApproved: false, dateCreated: new Date(), lastChecked: new Date(), lastUpdated: new Date()])
+        feed.save(flush: true, failOnError: true)
+
+        def model = controller.show(feed.id)
+
+        assert feed.id == model.feedInstance.id
+    }
+
+    @Test
+    void testEdit() {
+        def feed = Feed.newInstance([title: 'Test ' + UUID.randomUUID(), url: 'http://test.org/' + UUID.randomUUID(), isApproved: false, dateCreated: new Date(), lastChecked: new Date(), lastUpdated: new Date()])
+        feed.save(flush: true, failOnError: true)
+
+        def model = controller.edit(feed.id)
+
+        assert feed.id == model.feedInstance.id
+    }
+
+    @Test
+    void testUpdate() {
+        def randomId = UUID.randomUUID()
+        def feed = Feed.newInstance([title: 'Test ' + randomId, url: 'http://test.org/' + randomId, isApproved: false, dateCreated: new Date(), lastChecked: new Date(), lastUpdated: new Date()])
+        feed.save(flush: true, failOnError: true)
+        def version = feed.version
+        def updatedTitle = 'Updated ' + randomId
+        controller.params.putAll([title: updatedTitle])
+        controller.update(feed.id, version)
+
+        def url = controller.response.redirectedUrl
+        def urlArr = url.split('/')
+        def id = urlArr[urlArr.length - 1]
+        def updatedFeed = Feed.findById(id)
+
+        assertEquals "/feed/show/" + id, controller.response.redirectedUrl
+        assert updatedFeed.title == updatedTitle
+    }
+
+    @Test
+    void testDelete() {
+        def feed = Feed.newInstance([title: 'Test ' + UUID.randomUUID(), url: 'http://test.org/' + UUID.randomUUID(), isApproved: false, dateCreated: new Date(), lastChecked: new Date(), lastUpdated: new Date()])
+        feed.save(flush: true, failOnError: true)
+
+        controller.delete(feed.id)
+
+        def test = Feed.findById(feed.id)
+        assertNull(test)
+        assertEquals('/feed/list', controller.response.redirectedUrl)
+    }
 }

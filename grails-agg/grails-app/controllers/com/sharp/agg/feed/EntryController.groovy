@@ -110,7 +110,7 @@ class EntryController {
     }
 
     def edit(Long id) {
-        show()
+        show(id)
     }
 
     def update(Long id, Long version) {
@@ -152,7 +152,7 @@ class EntryController {
             return
         }
         def deleted = entryService.delete(entryInstance)
-        if (deleted) {
+        if (!entryInstance.hasErrors()) {
             flash.message = message(code: 'default.deleted.message', args: [message(code: 'entry.label', default: 'Entry'), id])
             redirect(action: "list")
         }

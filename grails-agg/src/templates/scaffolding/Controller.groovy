@@ -44,7 +44,7 @@ class ${className}Controller {
     }
 
     def edit(Long id) {
-        show()
+        show(id)
     }
 
     def update(Long id, Long version) {
@@ -79,14 +79,14 @@ class ${className}Controller {
     }
 
     def delete(Long id) {
-        def ${propertyName} = ${className}.findById(id)
+        def ${propertyName} = ${className}.get(id)
         if (!${propertyName}) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: '${domainClass.propertyName}.label', default: '${className}'), id])
             redirect(action: "list")
             return
         }
         def deleted = crudService.delete(${propertyName})
-        if (deleted) {
+        if (!${propertyName}.hasErrors()) {
             flash.message = message(code: 'default.deleted.message', args: [message(code: '${domainClass.propertyName}.label', default: '${className}'), id])
             redirect(action: "list")
         }

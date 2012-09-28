@@ -76,7 +76,7 @@ class FeedController {
     }
 
     def edit(Long id) {
-        show()
+        show(id)
     }
 
     def update(Long id, Long version) {
